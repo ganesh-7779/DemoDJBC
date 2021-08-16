@@ -9,12 +9,15 @@
  * @version : 1.0
  **********************************************************************/
 package com.bridgelabz;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 public class DemoJDBC {
-
+    String jdbcURL = "jdbc:mysql://localhost:3307/payroll_service?useSSL=false";
+    String userName ="root";
+    String password = "Ganesh@7779";
+    ArrayList<tableModel> salaryList =new ArrayList<>();
     private static Connection con;
 
     public static boolean connectToDb(String jdbcURL, String userName, String password)   {
@@ -37,6 +40,26 @@ public class DemoJDBC {
             System.out.println("Cannot found driver in class path");
             return false;
         }
+    }
+
+    public int getSalaryFromDb (String query){
+        connectToDb(jdbcURL,userName,password);
+        try {
+            Statement st = con.createStatement();
+            ResultSet resultSet = st.executeQuery(query);
+            while (!(resultSet.next() != true)){
+                tableModel employee = new tableModel(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getInt(4));
+                salaryList.add(employee);
+            }
+            System.out.println(salaryList);
+            return salaryList.size();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }
