@@ -52,4 +52,26 @@ public class DemoJDBC_Test {
             e.printStackTrace();
         }
     }
+    //UC2
+    @Test
+    public void given_ListOfSalaryDetailsOfEmployess_ShouldReturnNumberOfEmployees() {
+        try {
+            DemoJDBC jdbc = new DemoJDBC();
+            int result = jdbc.getSalaryFromDb("SELECT id,name,gender,salary FROM employee_payroll");
+            Assert.assertEquals(3, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void given_ListOfSalaryDetailsOfEmployess_WhenGivenWrongQuery_ShouldReturnZero() {
+        try {
+            DemoJDBC jdbc = new DemoJDBC();
+            int result = jdbc.getSalaryFromDb("SELECT * FROM employee");//Wrong Query, throws exception
+            Assert.assertEquals(0, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
